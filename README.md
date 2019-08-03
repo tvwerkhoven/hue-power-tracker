@@ -16,7 +16,7 @@ By multiplying power with duration since last measurement, we get energy.
 
 # Method
 
-1. Per lamp, query brightness, state, uniqueid, modelid
+1. Per lamp, query brightness, state (=on/off), uniqueid, modelid
 2. Per lamp, compute power_min + (brightness*state)**2 * (power_max - power_min)
 3. Query last data point from InfluxDB including timestamp
 4. Write new energy use point in InfluxDB 
@@ -26,7 +26,16 @@ By multiplying power with duration since last measurement, we get energy.
 To get brightness to power mapping, I used a Brennenstuhl PM 231 E power meter
 with rated power measurement precision of +/-1% or +/-0.2 W. For idle power, 
 in some cases I confirmed the meter's linearity by a constant base load of 15W
-(incandescent bulb). The results are shown below.
+(incandescent bulb). The results are shown in the below table and graph.
+
+| Type                              | Modelid                        | Brightness (lm) | Rated power (W) | Measured max power (W) | Idle power (W) | Efficiency (lm/W) |
+|-----------------------------------|--------------------------------|-----------------|-----------------|------------------------|----------------|-------------------|
+| Ikea Trådfri E27                  | TRADFRI bulb E27 W opal 1000lm | 1000            | 12.5            | 12.8                   | 0.3            | 78                |
+| Ikea Trådfri E14                  | TRADFRI bulb E14 WS opal 400lm | 400             | 5.3             | 4.4                    | 0.4            | 91                |
+| Philips Hue White Ambiance E27    | LTW010                         | 806             | 9               | 6.8                    | 0.3            | 118               |
+| Philips Hue White Ambiance E14    | LTW012                         | 470             | 6               | 4.5                    | 0.3            | 104               |
+| Philips Hue LightStrip+ (2 meter) | LST002                         | 1600            | 20.5            | 16.7                   | 0.1            | 96                |
+| Philips Hue LightStrip+ (4 meter) | LST002                         | 3500            | 43.5            | 23.0                   | 0.1            | 152               |
 
 ![Hue and Trådfri brightness to power calibration](https://tweakers.net/ext/f/4WxxyZJZHI44JGXEMJ2fPOxk/full.png)
 
