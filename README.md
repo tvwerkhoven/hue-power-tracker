@@ -28,7 +28,7 @@ with rated power measurement precision of +/-1% or +/-0.2 W. For idle power,
 in some cases I confirmed the meter's linearity by a constant base load of 15W
 (incandescent bulb). The results are shown below.
 
-![Hue and Trådfri brightness to power calibration](https://raw.githubusercontent.com/tvwerkhoven/hue-power-tracker/master/hue_calib_response.png)
+![Hue and Trådfri brightness to power calibration](https://tweakers.net/ext/f/4WxxyZJZHI44JGXEMJ2fPOxk/full.png)
 
 Note that I have three different lightstrips, one of nominal 2.0m length, one 
 of 2.7m, and one of 4.0m length. Surprisingly, the 4.0m version only uses ±40%
@@ -39,13 +39,13 @@ become more efficient at higher loads.
 After getting brightness to power data, I normalized these and subtracted the
 0 brightness (idle) power to get the curves below.
 
-![Hue and Trådfri brightness to normalized power calibration](https://raw.githubusercontent.com/tvwerkhoven/hue-power-tracker/master/hue_calib_response_norm_col.png)
+![Hue and Trådfri brightness to normalized power calibration](https://tweakers.net/ext/f/irs4go5hGpgoAtYLNywCJTJu/full.png)
 
 Finally, I fitted the curve (yeah yeah, that's Excel, apologies) to get a
 calibration curve for all lights. I could have made a curve per bulb, but
 didn't feel this was worth the trouble.
 
-![Hue and Trådfri brightness to normalized power calibration with polynomial fit](https://raw.githubusercontent.com/tvwerkhoven/hue-power-tracker/master/hue_calib_response_norm_fit.png)
+![Hue and Trådfri brightness to normalized power calibration with polynomial fit](https://tweakers.net/ext/f/n7Db3DPovU1tHmgI01QSX7Eu/full.png)
 
 Although I expected an exponential response curve due to eyesight behaving
 logarithmically, it turns out the response is quadratic. For simplicity I
