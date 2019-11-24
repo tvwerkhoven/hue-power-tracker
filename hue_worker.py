@@ -26,7 +26,8 @@ hue_power_min_max = {
 	'LTW012': [4.5, 0.27],
 	'LTW013': [4.5, 0.25], # guesstimate based on LTW012
 	'LST002': [16.7, 0.1],
-	'Plug 01': [1.0+0.4, 0.4] # hacky: set max to 1+min to ensure scaling with multiplier works
+	'SP 120': [1.0+0.4, 0.4], # innr SP 120 - hacky: set max to 1+min to ensure scaling with multiplier works
+	'Plug 01': [1.0+0.4, 0.4] # Osram Smart+ - hacky: set max to 1+min to ensure scaling with multiplier works
 	}
 
 # For some Hue apparati we need to know the multiplier. E.g. lightstrips can 
@@ -83,7 +84,8 @@ if (r.ok and r.status_code == 200):
 	respseries = resp['results'][0].get('series',[])
 	if (len(respseries)):
 		# Get first value of first series of first result. Lasttimestr is like 2019-08-02T22:42:43+02:00
-		lasttimestr, lastenergy = respseries[0]['values'][0]
+		lasttimestr = respseries[0]['values'][0][0]
+		lastenergy = respseries[0]['values'][0][-1]
 		# In python3.7 we could use %z to parse TZ info. Since influxdb will 
 		# return UTC, we add this timezone manually for 3.5/3.6 compatibility.
 		lasttime = datetime.datetime.strptime(lasttimestr, "%Y-%m-%dT%H:%M:%SZ")
