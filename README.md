@@ -41,9 +41,13 @@ in some cases I confirmed the meter's linearity by a constant base load of 15W
 
 Note that I have three different lightstrips, one of nominal 2.0m length, one 
 of 2.7m, and one of 4.0m length. Surprisingly, the 4.0m version only uses ±40%
-more power (instead of expected 100%). It could be that the adapter/driver is 
-overspec'ed for only 2m strips (since they can drive up to 10m), and therefore
-become more efficient at higher loads.
+more power (instead of expected 100%). This is because the Hue Lighstrip Plus
+luminosity is fixed: 2 meter or 10 meter both give 1600 lumen as output, as 
+confirmed by the Hue Customer Service. Also, since the PSU is rated at 20W,
+and LEDs typically have ±100lm/W efficiency, it follows that the PSU cannot
+support more than 2000 lm. The ±900 lumen spec for the 1-meter extension 
+strip is only valid in the hypothetical case this extension strip is powered
+individually.
 
 After getting brightness to power data, I normalized these and subtracted the
 0 brightness (idle) power to get the curves below.
