@@ -33,24 +33,24 @@ INFLUX_QUERY_SET="energy huelights={:.0f}"
 HUE_BRIDGE_IP='172.16.0.1'
 
 # Power usage per model, both (empirical) max as well as min (idle) power
-hue_power_min_max = {
+hue_model_power_min_max = {
 	'TRADFRI bulb E27 W opal 1000lm': [12.8, 0.3],
 	'TRADFRI bulb E14 WS opal 400lm': [4.4, 0.4],
 	'TRADFRI bulb GU10 W 400lm': [4.4, 0.4], # guesstimate based on TRADFRI bulb E14 WS opal 400lm
-	'LTW010': [6.8, 0.3],
-	'LTW012': [4.5, 0.27],
-	'LTW013': [4.5, 0.25], # guesstimate based on LTW012
-	'LST002': [16.7, 0.1],
-	'SP 120': [1.0+0.4, 0.4], # innr SP 120 - hacky: set max to 1+min to ensure scaling with multiplier works
-	'Plug 01': [1.0+0.4, 0.4] # Osram Smart+ - hacky: set max to 1+min to ensure scaling with multiplier works
+	'LTW010': [6.8, 0.3], # Hue White Ambiance E27 [rated 8xxlm @ 9W]
+	'LTW012': [4.5, 0.27], # Hue White Ambiance E14 [rated 470lm @ 6W]
+	'LTW013': [4.5, 0.25], # Hue White ambiance GU10 [rated 250lm @ 6W], guesstimate based on LTW012
+	'LST002': [16.7, 0.1], # Hue Lightstrip Plus [rated 1600lm @ 20W (max)]
+	'SP 120': [0.4, 0.4], # innr SP 120
+	'Plug 01': [0.4, 0.4] # Osram Smart+
 	}
 
-# For some Hue apparati we need to know the multiplier. E.g. lightstrips can 
-# be extended, and on/off switches should have the power connected to them.
-# Minimum power is not affected by multiplier because it remains one device. 
-hue_multiplier = {
-	'3b5d20': 5.7-0.4, # 'On/Off plug' -- full load 5.7W (plug + device)
-	'20d2d8': 1.4, # 'Lightstrip', 4m = 40% extra power wrt 2m (no really)
+# For some specific Hue apparati we specift precise loads. E.g. lightstrips
+# can be extended, and on/off switches should have loads connected to them.
+# Set these device-specific max powers here.
+hue_lamp_power_max = {
+	# '3b5d20': 5.7, # 'Plug 01' On/Off plug -- full load 5.7W (plug + device)
+	# '20d2d8': 23, # 'Lightstrip', 4m = 40% extra power wrt 2m (no really)
 	}
 
 b = Bridge(HUE_BRIDGE_IP)
@@ -82,8 +82,8 @@ if (INFLUX_QUERY_RAW):
 # then scale quadratically to convert to power.
 totalpower = 0
 for (lid, lmodelid, lbri) in lights:
-	power_max, power_min = hue_power_min_max[lmodelid]
-	thispower = power_min + ((lbri/254)**2.0)*(power_max-power_min)*hue_multiplier.get(lid,1)
+	power_max, power_min = hue_model_power_min_max[lmodelid]
+	thispower = power_min + ((lbri/254)**2.0)*(hue_lamp_power_max.get(lid,power_max)-power_min)
 	totalpower += thispower
 	print("lid={}, power={} min={}, bri={}, max={}, mult={}".format(lid, thispower, power_min, lbri/254, power_max, hue_multiplier.get(lid,1)))
  
