@@ -105,7 +105,7 @@ for (lid, lmodelid, lbri) in lights:
 r = requests.post(INFLUX_QUERY_URI, data={'q': INFLUX_QUERY_GET}, timeout=5)
 
 # If data is OK, continue, else fail
-if (r.ok and r.status_code == 200):
+if (r.status_code == 200):
 	resp = json.loads(r.text)
 	
 	# Check if we have results, if not we keep default 0
