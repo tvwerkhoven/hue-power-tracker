@@ -39,7 +39,7 @@ with open("config.yaml", 'r') as stream:
 	try:
 		data = yaml.safe_load(stream)
 		INFLUX_WRITE_URI = data['hue_worker']['influx_write_uri'] # e.g. "http://localhost:8086/write?db=smarthome&precision=s"
-		INFLUX_QUERY_URI = data['hue_worker']['influx_write_uri'] # e.g. "http://localhost:8086/query?db=smarthome"
+		INFLUX_QUERY_URI = data['hue_worker']['influx_query_uri'] # e.g. "http://localhost:8086/query?db=smarthome"
 		HUE_BRIDGE_IP = data['hue_worker']['hue_bridge_ip']
 		# Use if you want to store raw brightness for each device, or set to None to skip
 		INFLUX_QUERY_RAW = None # e.g. "hue,light={},model={} bri={}" 
