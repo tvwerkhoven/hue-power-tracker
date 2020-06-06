@@ -8,9 +8,15 @@ import logging
 import logging.handlers
 import yaml
 
-# Init logger, defaults to console
+# Init logger
+# https://docs.python.org/3/howto/logging.html#configuring-logging
 my_logger = logging.getLogger("MyLogger")
 my_logger.setLevel(logging.DEBUG)
+
+# create console handler and set level to debug
+handler_stream = logging.StreamHandler()
+handler_stream.setLevel(logging.DEBUG)
+my_logger.addHandler(handler_stream)
 
 # create syslog handler which also shows filename in log
 handler_syslog = logging.handlers.SysLogHandler(address = '/dev/log')
