@@ -89,7 +89,7 @@ for (lid, lmodelid, lbri) in lights:
 	power_max, power_min = hue_model_power_min_max[lmodelid]
 	thispower = power_min + ((lbri/254)**2.0)*(hue_lamp_power_max.get(lid,power_max)-power_min)
 	totalpower += thispower
-	print("lid={}, power={} min={}, bri={}, max={}, mult={}".format(lid, thispower, power_min, lbri/254, power_max, hue_multiplier.get(lid,1)))
+	print("lid={}, power={} min={}, bri={}, max={}, lampmax={}".format(lid, thispower, power_min, lbri/254, power_max, hue_lamp_power_max.get(lid,1)))
  
 # Get last entry of huelights as reference, use time delta to calculate energy usage
 r = requests.post(INFLUX_QUERY_URI, data={'q': INFLUX_QUERY_GET}, timeout=5)
