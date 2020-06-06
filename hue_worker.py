@@ -121,10 +121,13 @@ if (r.status_code == 200):
 		lasttime = lasttime.replace(tzinfo=datetime.timezone.utc)
 		lastduration = (datetime.datetime.now(tz=lasttime.tzinfo) - lasttime).seconds
 
+	my_logger.debug("Last hue energy was {}, current power is {}, duration since last: {}".format(lastenergy, totalpower,lastduration))
+
 	# 3. Calculate energy use, add to previous entry, store to influx
 	query = INFLUX_QUERY_SET.format(lastenergy + totalpower*lastduration)
 	r = requests.post(INFLUX_WRITE_URI, data=query, timeout=5)
 	if (r.status_code != 204):
 		my_logger.error("Push to influxdb failed: {} - {}".format(str(r.status_code), str(r.text)))
 else:
-	my_logger.error("Could not retrieve last hue power load from database")
+	my_logger.error("Could not retrieve last hue power load from database: {} - {}".format(str(r.status_code), str(r.text)))
+
