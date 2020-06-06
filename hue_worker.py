@@ -4,6 +4,21 @@ from phue import Bridge
 import requests
 import datetime
 import json
+import logging
+import logging.handlers
+
+# Init logger, defaults to console
+my_logger = logging.getLogger("MyLogger")
+my_logger.setLevel(logging.DEBUG)
+
+# create syslog handler which also shows filename in log
+handler_syslog = logging.handlers.SysLogHandler(address = '/dev/log')
+formatter = logging.Formatter('%(filename)s: %(message)s')
+handler_syslog.setFormatter(formatter)
+handler_syslog.setLevel(logging.INFO)
+my_logger.addHandler(handler_syslog)
+
+my_logger.info("Starting hue_worker...")
 
 # Influxdb/Hue bridge settings URI
 INFLUX_WRITE_URI="http://localhost:8086/write?db=smarthome&precision=s"
@@ -95,3 +110,7 @@ if (r.ok and r.status_code == 200):
 	# 3. Calculate energy use, add to previous entry, store to influx
 	query = INFLUX_QUERY_SET.format(lastenergy + totalpower*lastduration)
 	r = requests.post(INFLUX_WRITE_URI, data=query, timeout=5)
+	if (r.status_code != 204):
+		my_logger.error("Push to influxdb failed: {} - {}".format(str(r.status_code), str(r.text)))
+else:
+	my_logger.error("Could not retrieve last hue power load from database")
