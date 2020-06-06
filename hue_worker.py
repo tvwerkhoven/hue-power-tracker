@@ -23,15 +23,16 @@ my_logger.info("Starting hue_worker...")
 
 # Power usage per model, both (empirical) max as well as min (idle) power
 hue_model_power_min_max = {
-	'TRADFRI bulb E27 W opal 1000lm': [12.8, 0.3],
-	'TRADFRI bulb E14 WS opal 400lm': [4.4, 0.4],
+	'TRADFRI bulb E27 W opal 1000lm': [12.8, 0.3], # [calibrated]
+	'TRADFRI bulb E14 WS opal 400lm': [4.4, 0.4], # [calibrated]
 	'TRADFRI bulb GU10 W 400lm': [4.4, 0.4], # guesstimate based on TRADFRI bulb E14 WS opal 400lm
-	'LTW010': [6.8, 0.3], # Hue White Ambiance E27 [rated 8xxlm @ 9W]
-	'LTW012': [4.5, 0.27], # Hue White Ambiance E14 [rated 470lm @ 6W]
+	'LTW010': [6.8, 0.3], # Hue White Ambiance E27 [rated 8xxlm @ 9W, calibrated]
+	'LTW012': [4.5, 0.27], # Hue White Ambiance E14 [rated 470lm @ 6W, calibrated]
 	'LTW013': [4.5, 0.25], # Hue White ambiance GU10 [rated 250lm @ 6W], guesstimate based on LTW012
-	'LST002': [16.7, 0.1], # Hue Lightstrip Plus [rated 1600lm @ 20W (max)]
-	'SP 120': [0.4, 0.4], # innr SP 120
-	'Plug 01': [0.4, 0.4] # Osram Smart+
+	'LST002': [16.7, 0.1], # Hue Lightstrip Plus [rated 1600lm @ 20W (max), calibrated]
+	'LTC015': [55, 0.2], # Hue light panel [guesstimate]
+	'SP 120': [0.4, 0.4], # innr SP 120 [calibrated]
+	'Plug 01': [0.4, 0.4] # Osram Smart+ [calibrated]
 	}
 
 with open("config.yaml", 'r') as stream:
