@@ -7,6 +7,7 @@ import json
 import logging
 import logging.handlers
 import yaml
+import os, sys
 
 # Init logger
 # https://docs.python.org/3/howto/logging.html#configuring-logging
@@ -41,7 +42,9 @@ hue_model_power_min_max = {
 	'Plug 01': [0.4, 0.4] # Osram Smart+ [calibrated]
 	}
 
-with open("config.yaml", 'r') as stream:
+# Load config from same dir as file. hacky? yes.
+# https://www.tutorialspoint.com/How-to-open-a-file-in-the-same-directory-as-a-Python-script
+with open(os.path.join(sys.path[0], "config.yaml"), 'r') as stream:
 	try:
 		data = yaml.safe_load(stream)
 		INFLUX_WRITE_URI = data['hue_worker']['influx_write_uri'] # e.g. "http://localhost:8086/write?db=smarthome&precision=s"
