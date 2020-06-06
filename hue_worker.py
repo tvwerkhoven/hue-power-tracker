@@ -6,6 +6,7 @@ import datetime
 import json
 import logging
 import logging.handlers
+import yaml
 
 # Init logger, defaults to console
 my_logger = logging.getLogger("MyLogger")
@@ -20,18 +21,6 @@ my_logger.addHandler(handler_syslog)
 
 my_logger.info("Starting hue_worker...")
 
-# Influxdb/Hue bridge settings URI
-INFLUX_WRITE_URI="http://localhost:8086/write?db=smarthome&precision=s"
-INFLUX_QUERY_URI="http://localhost:8086/query?db=smarthome"
-
-# Queries to get last huelights energy and
-#INFLUX_QUERY_RAW="hue,light={},model={} bri={}" # Use if you want to store raw brightness for each device, or set to None to skip
-INFLUX_QUERY_RAW=None
-INFLUX_QUERY_GET="select huelights from energy order by desc limit 1"
-INFLUX_QUERY_SET="energy huelights={:.0f}"
-
-HUE_BRIDGE_IP='172.16.0.1'
-
 # Power usage per model, both (empirical) max as well as min (idle) power
 hue_model_power_min_max = {
 	'TRADFRI bulb E27 W opal 1000lm': [12.8, 0.3],
@@ -45,13 +34,28 @@ hue_model_power_min_max = {
 	'Plug 01': [0.4, 0.4] # Osram Smart+
 	}
 
-# For some specific Hue apparati we specift precise loads. E.g. lightstrips
-# can be extended, and on/off switches should have loads connected to them.
-# Set these device-specific max powers here.
-hue_lamp_power_max = {
-	# '3b5d20': 5.7, # 'Plug 01' On/Off plug -- full load 5.7W (plug + device)
-	# '20d2d8': 23, # 'Lightstrip', 4m = 40% extra power wrt 2m (no really)
-	}
+with open("config.yaml", 'r') as stream:
+	try:
+		data = yaml.safe_load(stream)
+		INFLUX_WRITE_URI = data['hue_worker']['influx_write_uri'] # e.g. "http://localhost:8086/write?db=smarthome&precision=s"
+		INFLUX_QUERY_URI = data['hue_worker']['influx_write_uri'] # e.g. "http://localhost:8086/query?db=smarthome"
+		HUE_BRIDGE_IP = data['hue_worker']['hue_bridge_ip']
+		# Use if you want to store raw brightness for each device, or set to None to skip
+		INFLUX_QUERY_RAW = None # e.g. "hue,light={},model={} bri={}" 
+		INFLUX_QUERY_GET = data['hue_worker']['influx_query_get'] # e.g. "select huelights from energy order by desc limit 1"
+		INFLUX_QUERY_SET = data['hue_worker']['influx_query_set'] # e.g. "energy huelights={:.0f}"
+
+		# For some specific Hue apparati we specift precise loads. E.g. lightstrips
+		# can be extended, and on/off switches should have loads connected to them.
+		# Set these device-specific max powers here.
+		hue_lamp_power_max = {
+			# '3b5d20': 5.7, # 'Plug 01' On/Off plug -- full load 5.7W (plug + device)
+			# '20d2d8': 23, # 'Lightstrip', 4m = 40% extra power wrt 2m (no really)
+			}
+		hue_lamp_power_max = data['hue_worker']['hue_lamp_power_max']
+	except yaml.YAMLError as exc:
+		my_logger.exception('Could not load yaml file')
+
 
 b = Bridge(HUE_BRIDGE_IP)
 # If the app is not registered and the button is not pressed, press the button and call connect() (this only needs to be run a single time)
