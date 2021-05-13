@@ -99,11 +99,11 @@ totalpower = 0
 for (lid, lmodelid, lbri) in lights:
 	try:
 		power_max, power_min = hue_model_power_min_max[lmodelid]
+		thispower = power_min + ((lbri/254)**2.0)*(hue_lamp_power_max.get(lid,power_max)-power_min)
+		totalpower += thispower
+		my_logger.debug("lid={}, power={} min={}, bri={}, max={}, lampmax={}".format(lid, thispower, power_min, lbri/254, power_max, hue_lamp_power_max.get(lid,1)))
 	except:
 		my_logger.exception('Unknown Zigbee model id')
-	thispower = power_min + ((lbri/254)**2.0)*(hue_lamp_power_max.get(lid,power_max)-power_min)
-	totalpower += thispower
-	my_logger.debug("lid={}, power={} min={}, bri={}, max={}, lampmax={}".format(lid, thispower, power_min, lbri/254, power_max, hue_lamp_power_max.get(lid,1)))
  
 # Get last entry of huelights as reference, use time delta to calculate energy usage
 r = requests.post(INFLUX_QUERY_URI, data={'q': INFLUX_QUERY_GET}, timeout=5)
