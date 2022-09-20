@@ -36,9 +36,12 @@ hue_model_power_min_max = {
 	'LTW010': [6.8, 0.3], # Hue White Ambiance E27 [rated 8xxlm @ 9W, calibrated]
 	'LTW012': [4.5, 0.27], # Hue White Ambiance E14 [rated 470lm @ 6W, calibrated]
 	'LTW013': [4.5, 0.25], # Hue White ambiance GU10 [rated 250lm @ 6W], guesstimate based on LTW012
+	'LWA009': [16,  0.3], # Hue White E27 1600 lumen [rated 1600lm @ 16W], guesstimate based on LTW010
+	'LTA001': [9,   0.3], # Hue White E27 with Bluetooth [rated 806lm @ 9W], guesstimate based on LTW010
+	'LTE002': [4.5, 0.3], # Hue White Ambiance E14 w/ BT [rated ?? @ ?W], guesstimate based on LTW012
 	'LTG002': [4.5, 0.25], # Hue White ambiance GU10 with BT [rated 350lm @ 5W], guesstimate based on LTW012
 	'LST002': [16.7, 0.1], # Hue Lightstrip Plus [rated 1600lm @ 20W (max), calibrated]
-	'LTC015': [55, 0.2], # Hue light panel [guesstimate]
+	'LTC015': [55, 0.2], # Hue Aurelle Rectangle Panel Light 30x120cm [guesstimate]
 	'SP 120': [0.4, 0.4], # innr SP 120 [calibrated]
 	'Plug 01': [0.4, 0.4] # Osram Smart+ [calibrated]
 	}
